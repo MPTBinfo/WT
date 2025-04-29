@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #4CAF50;
+      padding: 10px;
+      color: white;
+    }
+    .user-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: white;
+      color: #4CAF50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    iframe {
+      width: 100%;
+      height: 85vh;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div id="welcomeText">Welcome, User</div>
+    <div style="display: flex; gap: 10px; align-items: center;">
+      <div class="user-icon" id="userInitial">U</div>
+      <button onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTaHXk-Ilgvc1c10pR487crA7l61jh_fsef7b012cBSDZKq_BN54AhUKaEaI5lfXYpkL1Y4SkpL7txC/pubhtml"></iframe>
+
+  <script>
+    const username = localStorage.getItem("loggedInUser");
+
+    if (!username) {
+      window.location.href = "login.html";
+    } else {
+      document.getElementById("welcomeText").innerText = "Welcome, " + username;
+      document.getElementById("userInitial").innerText = username.charAt(0).toUpperCase();
+    }
+
+    function logout() {
+      localStorage.removeItem("loggedInUser");
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>
