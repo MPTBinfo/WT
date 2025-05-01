@@ -2,76 +2,46 @@
 <html>
 <head>
   <title>Register</title>
+  <link rel="stylesheet" href="css.css">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f0f2f5;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .container {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 0 12px rgba(0,0,0,0.1);
-      width: 300px;
-    }
-    input[type="text"], input[type="password"], input[type="email"], input[type="tel"] {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-    input[type="submit"] {
-      width: 100%;
-      padding: 10px;
-      background: #28a745;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-    }
+    body { font-family: Arial; padding: 50px; }
+    input, button { display: block; margin: 10px 0; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Register</h2>
-    <form id="registerForm">
-      <input type="text" id="username" placeholder="Username" required />
-      <input type="password" id="password" placeholder="Password" required />
-      <input type="email" id="email" placeholder="Email" required />
-      <input type="tel" id="phone" placeholder="Phone" required />
-      <input type="submit" value="Register" />
-    </form>
-  </div>
+   <div class="container">
 
+  <img class="logo" src="https://static.wixstatic.com/media/614cf9_a101f0e0b63443febc5c09a95f93010a~mv2.png/v1/fill/w_226,h_300,al_c,q_85,usm_1.20_1.00_0.01,enc_avif,quality_auto/MPT_Logo_00.png" alt="MPT Logo">
+    <h1>Madhya Pradesh Tourism Board</h1>
+    <h2>Welcome To Water Tourism Dashboard</h2>
+  <h3>Register</h3>
+  <input type="text" id="username" placeholder="Username" required>
+  <input type="password" id="password" placeholder="Password" required>
+  <input type="email" id="email" placeholder="Email" required>
+  <input type="tel" id="phone" placeholder="Phone" required>
+  <button onclick="register()">Register</button>
+  <p id="msg"></p>
+  <p>Already registered? <a href="index.html">Login</a></p>
+</div>
   <script>
-    const users = {};
+    const API_URL = 'https://script.google.com/macros/s/AKfycbzph_ysxYkgYxBttOUuAozg10y4RY5kCwkcyp5SV17bqBsVPOSecHPFIJ5EzULPKpWpvg/exec';
 
-    document.getElementById("registerForm").addEventListener("submit", function(e) {
-      e.preventDefault();
+    function register() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const email = document.getElementById('email').value;
+      const phone = document.getElementById('phone').value;
 
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
-      const email = document.getElementById("email").value;
-      const phone = document.getElementById("phone").value;
-
-      // Store user in memory (not secure or persistent)
-      users[username] = { password, email, phone };
-      alert("User registered locally. Now sending registration email.");
-
-      // Prepare email content
-      const subject = encodeURIComponent("New WT Admin User Registration");
-      const body = encodeURIComponent(
-        `Name: ${username}\nEmail: ${email}\nPhone: ${phone}\nPassword: ${password}`
-      );
-
-      // Open user's email client to send the mail
-      window.location.href = `mailto:wtadmn.mptb@gmail.com?subject=${subject}&body=${body}`;
-    });
+      fetch(`${API_URL}?action=register&username=${username}&password=${password}&email=${email}&phone=${phone}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            document.getElementById('msg').innerText = "Registration successful!";
+          } else {
+            document.getElementById('msg').innerText = "Error occurred.";
+          }
+        });
+    }
   </script>
 </body>
 </html>
