@@ -1,34 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Register - MPTB Water Tourism</title>
+  <meta charset="UTF-8">
+  <title>Register</title>
+  <link rel="stylesheet" href="css.css">
 </head>
 <body>
-  <h2>Register</h2>
-  <input type="text" id="username" placeholder="Username" required><br><br>
-  <input type="password" id="password" placeholder="Password" required><br><br>
-  <input type="email" id="email" placeholder="Email" required><br><br>
-  <input type="text" id="phone" placeholder="Phone" required><br><br>
-  <button onclick="registerUser()">Register</button>
-  <p id="message"></p>
-  <p>Already have an account? <a href="login.html">Login</a></p>
+  <div class="container">
+    <h2>Register</h2>
+    <input type="text" id="username" placeholder="Username" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="tel" id="phone" placeholder="Phone" required />
+    <button onclick="registerUser()">Register</button>
+    <a href="login.html">Already have an account? Login</a>
+  </div>
 
   <script>
     function registerUser() {
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
-      const email = document.getElementById("email").value;
-      const phone = document.getElementById("phone").value;
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
 
-      fetch("https://script.google.com/macros/s/AKfycbzVJl_ET_Oc5B44f7EgecWxbhs01CKfrr85qWfdR3H11zg44A89K4rxUUR2Np3BNm/exec?action=register&username=" + encodeURIComponent(username) + "&password=" + encodeURIComponent(password) + "&email=" + encodeURIComponent(email) + "&phone=" + encodeURIComponent(phone))
-        .then(res => res.text())
-        .then(response => {
-          if (response.trim() === "registered") {
-            document.getElementById("message").innerText = "Registered successfully. You can now login.";
-          } else {
-            document.getElementById("message").innerText = "Error: " + response;
-          }
-        });
+      if (!username || !password || !email || !phone) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      fetch("https://script.google.com/macros/s/AKfycbzL6g_RhMugUZl21WN7AYFleGjSsentubvGyfxGjdXqOgWCo4wgYpFyXRJc9r1EOAJF1g/exec", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: "register",
+          username,
+          password,
+          email,
+          phone
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert("Registration successful!");
+          window.location.href = "login.html";
+        } else {
+          alert(data.message || "Registration failed.");
+        }
+      })
+      .catch(err => {
+        console.error("Error:", err);
+        alert("Something went wrong. Try again.");
+      });
     }
   </script>
 </body>
