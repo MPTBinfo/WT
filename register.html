@@ -1,36 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Register</title>
+  <title>Register - MPTB Water Tourism</title>
 </head>
 <body>
   <h2>Register</h2>
-  <input type="text" id="username" placeholder="Username"><br><br>
-  <input type="password" id="password" placeholder="Password"><br><br>
-  <input type="email" id="email" placeholder="Email"><br><br>
-  <input type="text" id="phone" placeholder="Phone"><br><br>
+  <input type="text" id="username" placeholder="Username" required><br><br>
+  <input type="password" id="password" placeholder="Password" required><br><br>
+  <input type="email" id="email" placeholder="Email" required><br><br>
+  <input type="text" id="phone" placeholder="Phone" required><br><br>
   <button onclick="registerUser()">Register</button>
-  <p id="message" style="color:green;"></p>
-  <p>Already have an account? <a href="index.html">Login</a></p>
+  <p id="message"></p>
+  <p>Already have an account? <a href="login.html">Login</a></p>
 
   <script>
-    const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxzbyx0mFCBwSkXfU4qYRKHGTrwU1dES2Z4X-4y47BEYcNNlBj1P3tB5AtdZcXlcLxBCQ/exec";
-
     function registerUser() {
       const username = document.getElementById("username").value;
       const password = document.getElementById("password").value;
       const email = document.getElementById("email").value;
       const phone = document.getElementById("phone").value;
 
-      const url = `${WEBAPP_URL}?action=register&username=${username}&password=${password}&email=${email}&phone=${phone}`;
-
-      fetch(url)
+      fetch("https://script.google.com/macros/s/AKfycbzVJl_ET_Oc5B44f7EgecWxbhs01CKfrr85qWfdR3H11zg44A89K4rxUUR2Np3BNm/exec?action=register&username=" + encodeURIComponent(username) + "&password=" + encodeURIComponent(password) + "&email=" + encodeURIComponent(email) + "&phone=" + encodeURIComponent(phone))
         .then(res => res.text())
-        .then(data => {
-          if (data.trim() === "registered") {
-            document.getElementById("message").innerText = "Account created successfully!";
+        .then(response => {
+          if (response.trim() === "registered") {
+            document.getElementById("message").innerText = "Registered successfully. You can now login.";
           } else {
-            document.getElementById("message").innerText = "Registration failed.";
+            document.getElementById("message").innerText = "Error: " + response;
           }
         });
     }
