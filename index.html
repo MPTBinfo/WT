@@ -1,31 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Login</title>
+  <title>Login - MPTB Water Tourism</title>
 </head>
 <body>
   <h2>Login</h2>
-  <input type="text" id="username" placeholder="Username"><br><br>
-  <input type="password" id="password" placeholder="Password"><br><br>
+  <input type="text" id="username" placeholder="Username" required><br><br>
+  <input type="password" id="password" placeholder="Password" required><br><br>
   <button onclick="loginUser()">Login</button>
-  <p id="message" style="color:red;"></p>
+  <p id="error" style="color: red;"></p>
   <p>Don't have an account? <a href="register.html">Register</a></p>
 
   <script>
-    const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxzbyx0mFCBwSkXfU4qYRKHGTrwU1dES2Z4X-4y47BEYcNNlBj1P3tB5AtdZcXlcLxBCQ/exec";
-
     function loginUser() {
       const username = document.getElementById("username").value;
       const password = document.getElementById("password").value;
-      const url = `${WEBAPP_URL}?action=login&username=${username}&password=${password}`;
 
-      fetch(url)
+      fetch("https://script.google.com/macros/s/AKfycbzVJl_ET_Oc5B44f7EgecWxbhs01CKfrr85qWfdR3H11zg44A89K4rxUUR2Np3BNm/exec?action=login&username=" + encodeURIComponent(username) + "&password=" + encodeURIComponent(password))
         .then(res => res.text())
-        .then(data => {
-          if (data.trim() === "success") {
+        .then(response => {
+          if (response.trim() === "success") {
+            localStorage.setItem("username", username);
             window.location.href = "dashboard.html";
           } else {
-            document.getElementById("message").innerText = "Login failed. Try again.";
+            document.getElementById("error").innerText = "Invalid login credentials";
           }
         });
     }
