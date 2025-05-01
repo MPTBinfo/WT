@@ -1,32 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Login - MPTB Water Tourism</title>
-  <link rel="stylesheet" href="css.css">
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+    }
+    a {
+      text-align: center;
+      display: block;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
-  <h2>Login</h2>
-  <input type="text" id="username" placeholder="Username" required><br><br>
-  <input type="password" id="password" placeholder="Password" required><br><br>
-  <button onclick="loginUser()">Login</button>
-  <p id="error" style="color: red;"></p>
-  <p>Don't have an account? <a href="register.html">Register</a></p>
+  <div class="container">
+    <h2>Login</h2>
+    <input type="text" id="username" placeholder="Username" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <button onclick="loginUser()">Login</button>
+    <a href="register.html">Don't have an account? Register</a>
+  </div>
 
   <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbzL6g_RhMugUZl21WN7AYFleGjSsentubvGyfxGjdXqOgWCo4wgYpFyXRJc9r1EOAJF1g/exec";
+
     function loginUser() {
       const username = document.getElementById("username").value;
       const password = document.getElementById("password").value;
 
-      fetch("https://script.google.com/macros/s/AKfycbzVJl_ET_Oc5B44f7EgecWxbhs01CKfrr85qWfdR3H11zg44A89K4rxUUR2Np3BNm/exec" + encodeURIComponent(username) + "&password=" + encodeURIComponent(password))
-        .then(res => res.text())
-        .then(response => {
-          if (response.trim() === "success") {
-            localStorage.setItem("username", username);
-            window.location.href = "dashboard.html";
-          } else {
-            document.getElementById("error").innerText = "Invalid login credentials";
-          }
-        });
+      fetch(scriptURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "login",
+          username,
+          password
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          localStorage.setItem("username", username);
+          window.location.href = "dashboard.html";
+        } else {
+          alert("Login failed. " + data.message);
+        }
+      })
+      .catch(error => alert("Error: " + error));
     }
   </script>
 </body>
