@@ -13,7 +13,7 @@
     <input type="email" id="email" placeholder="Email" required />
     <input type="tel" id="phone" placeholder="Phone" required />
     <button onclick="registerUser()">Register</button>
-    <a href="login.html">Already have an account? Login</a>
+    <a href="index.html">Already have an account? Login</a>
   </div>
 
   <script>
@@ -45,7 +45,7 @@
       .then(data => {
         if (data.success) {
           alert("Registration successful!");
-          window.location.href = "login.html";
+          window.location.href = "index.html";
         } else {
           alert(data.message || "Registration failed.");
         }
