@@ -2,60 +2,28 @@
 <html>
 <head>
   <title>Dashboard</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #4CAF50;
-      padding: 10px;
-      color: white;
-    }
-    .user-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background-color: white;
-      color: #4CAF50;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-    }
-    iframe {
-      width: 100%;
-      height: 85vh;
-      border: none;
-    }
-  </style>
 </head>
 <body>
-  <div class="topbar">
-    <div id="welcomeText">Welcome, User</div>
-    <div style="display: flex; gap: 10px; align-items: center;">
-      <div class="user-icon" id="userInitial">U</div>
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <h2>Welcome, <span id="username"></span>!</h2>
+    <div>
+      <img src="https://www.svgrepo.com/show/384674/account-avatar-profile-user-11.svg" width="30" style="vertical-align: middle; margin-right: 10px;">
       <button onclick="logout()">Logout</button>
     </div>
   </div>
-
-  <iframe src="https://script.google.com/macros/s/AKfycbxzbyx0mFCBwSkXfU4qYRKHGTrwU1dES2Z4X-4y47BEYcNNlBj1P3tB5AtdZcXlcLxBCQ/exec"></iframe>
+  <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTaHXk-Ilgvc1c10pR487crA7l61jh_fsef7b012cBSDZKq_BN54AhUKaEaI5lfXYpkL1Y4SkpL7txC/pubhtml?widget=true&amp;headers=false" width="100%" height="500"></iframe>
 
   <script>
-    const username = localStorage.getItem("loggedInUser");
-
+    const username = localStorage.getItem("username");
     if (!username) {
-      window.location.href = "login.html";
+      window.location.href = "index.html";
     } else {
-      document.getElementById("welcomeText").innerText = "Welcome, " + username;
-      document.getElementById("userInitial").innerText = username.charAt(0).toUpperCase();
+      document.getElementById("username").innerText = username;
     }
 
     function logout() {
-      localStorage.removeItem("loggedInUser");
-      window.location.href = "login.html";
+      localStorage.removeItem("username");
+      window.location.href = "index.html";
     }
   </script>
 </body>
