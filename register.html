@@ -1,60 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
   <title>Register</title>
-  <link rel="stylesheet" href="css.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+      width: 300px;
+    }
+    input[type="text"], input[type="password"], input[type="email"], input[type="tel"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
     <h2>Register</h2>
-    <input type="text" id="username" placeholder="Username" required />
-    <input type="password" id="password" placeholder="Password" required />
-    <input type="email" id="email" placeholder="Email" required />
-    <input type="tel" id="phone" placeholder="Phone" required />
-    <button onclick="registerUser()">Register</button>
-    <a href="index.html">Already have an account? Login</a>
+    <form id="registerForm">
+      <input type="text" id="username" placeholder="Username" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="tel" id="phone" placeholder="Phone" required />
+      <input type="submit" value="Register" />
+    </form>
   </div>
 
   <script>
-    function registerUser() {
-      const username = document.getElementById("username").value.trim();
-      const password = document.getElementById("password").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const phone = document.getElementById("phone").value.trim();
+    const users = {};
 
-      if (!username || !password || !email || !phone) {
-        alert("Please fill in all fields.");
-        return;
-      }
+    document.getElementById("registerForm").addEventListener("submit", function(e) {
+      e.preventDefault();
 
-      fetch("https://script.google.com/macros/s/AKfycbzL6g_RhMugUZl21WN7AYFleGjSsentubvGyfxGjdXqOgWCo4wgYpFyXRJc9r1EOAJF1g/exec", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          action: "register",
-          username,
-          password,
-          email,
-          phone
-        })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          alert("Registration successful!");
-          window.location.href = "index.html";
-        } else {
-          alert(data.message || "Registration failed.");
-        }
-      })
-      .catch(err => {
-        console.error("Error:", err);
-        alert("Something went wrong. Try again.");
-      });
-    }
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const email = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
+
+      // Store user in memory (not secure or persistent)
+      users[username] = { password, email, phone };
+      alert("User registered locally. Now sending registration email.");
+
+      // Prepare email content
+      const subject = encodeURIComponent("New WT Admin User Registration");
+      const body = encodeURIComponent(
+        `Name: ${username}\nEmail: ${email}\nPhone: ${phone}\nPassword: ${password}`
+      );
+
+      // Open user's email client to send the mail
+      window.location.href = `mailto:wtadmn.mptb@gmail.com?subject=${subject}&body=${body}`;
+    });
   </script>
 </body>
 </html>
