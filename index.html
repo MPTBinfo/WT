@@ -1,44 +1,165 @@
+
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
- <link rel="stylesheet" href="css.css">
-  <title>WT_Login</title>
+  <meta charset="UTF-8">
+  <title>MPTB Water Activity License Application</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: auto; }
+    label { display: block; margin-top: 10px; font-weight: bold; }
+    input, select, textarea { width: 100%; padding: 8px; margin-top: 5px; }
+    .activity-group { display: grid; grid-template-columns: 1fr 80px; gap: 10px; margin-bottom: 10px; }
+    .submit-btn { margin-top: 20px; padding: 10px 20px; font-size: 16px; }
+  </style>
 </head>
 <body>
-    <div class="container">
 
-  <img class="logo" src="https://static.wixstatic.com/media/614cf9_a101f0e0b63443febc5c09a95f93010a~mv2.png/v1/fill/w_226,h_300,al_c,q_85,usm_1.20_1.00_0.01,enc_avif,quality_auto/MPT_Logo_00.png" alt="MPT Logo">
-    <h1>Madhya Pradesh Tourism Board</h1>
-    <h2>Welcome To Water Tourism Dashboard</h2>
-  <h3>Login</h3>
-  <input type="text" id="username" placeholder="Username" required>
-  <input type="password" id="password" placeholder="Password" required>
-  <button onclick="login()">Login</button>
-  <p id="msg"></p>
-  <p>Don't have an account? <a href="register.html">Register</a></p>
-   </div>
+  <h2>MPTB Water Activity License Application</h2>
+  <form id="licenseForm" onsubmit="submitForm(event)">
+
+    <label>Applicant's Name</label>
+    <input type="text" name="applicantName" required>
+
+    <label>Address</label>
+    <textarea name="address" required></textarea>
+
+    <label>Contact Number</label>
+    <input type="text" name="contactNumber" required>
+
+    <label>Email ID</label>
+    <input type="email" name="email" required>
+
+    <label>Occupation</label>
+    <input type="text" name="occupation">
+
+    <label>PAN No.</label>
+    <input type="text" name="panNumber">
+
+    <label>Aadhaar No / GSTN No</label>
+    <input type="text" name="aadhaarGST">
+
+    <label>Date for Water Body Usage</label>
+    <input type="date" name="applicationDate" required>
+
+    <label>Water Body Name</label>
+    <select name="waterBody" required>
+      <option disabled selected value="">-- Select --</option>
+      <option>Indira Sagar Dam</option>
+      <option>Omkareshwar Dam</option>
+      <option>Tawa Dam</option>
+      <option>Bargi Dam</option>
+      <option>Bansagar Dam</option>
+      <option>Gandhi Sagar Dam</option>
+      <option>Manikheda Dam</option>
+      <option>Halali Dam</option>
+      <option>Chandpatha Dam</option>
+      <option>Betwa River (Orchha)</option>
+      <option>Chaural Dam</option>
+      <option>Gangau Dam</option>
+      <option>Barna Dam</option>
+      <option>Mann Dam</option>
+      <option>Hathni River</option>
+      <option>Dholabad Water Body</option>
+      <option>Tighara Water Body</option>
+      <option>Kishanpura Water Body</option>
+      <option>Govindgarh Water Body</option>
+      <option>Kolar Water Body</option>
+      <option>Machagora Dam</option>
+      <option>Sapna Dam</option>
+    </select>
+
+    <label>Activities (Enter No. of Units per Activity)</label>
+    <div class="activity-group"><input type="text" class="unit" placeholder="Motor Boat"><input type="number" min="0" value="0"></div>
+    <div class="activity-group"><input type="text" class="unit" placeholder="Cruise"><input type="number" min="0" value="0"></div>
+    <div class="activity-group"><input type="text" class="unit" placeholder="House Boat"><input type="number" min="0" value="0"></div>
+    <div class="activity-group"><input type="text" class="unit" placeholder="Water Scooter"><input type="number" min="0" value="0"></div>
+    <div class="activity-group"><input type="text" class="unit" placeholder="Water Parasailing"><input type="number" min="0" value="0"></div>
+    <div class="activity-group"><input type="text" class="unit" placeholder="Mini Cruise"><input type="number" min="0" value="0"></div>
+    <div class="activity-group"><input type="text" class="unit" placeholder="Paddle Boat"><input type="number" min="0" value="0"></div>
+    <div class="activity-group"><input type="text" class="unit" placeholder="Zorbing"><input type="number" min="0" value="0"></div>
+    <div class="activity-group"><input type="text" class="unit" placeholder="Banana Ride"><input type="number" min="0" value="0"></div>
+    <div class="activity-group"><input type="text" class="unit" placeholder="Bumper Ride"><input type="number" min="0" value="0"></div>
+    <div class="activity-group"><input type="text" class="unit" placeholder="Parasail"><input type="number" min="0" value="0"></div>
+
+    <label>Payment Mode</label>
+    <select name="paymentMode" required>
+      <option value="DD">Demand Draft</option>
+      <option value="UPI">UPI</option>
+    </select>
+
+    <label>Transaction / DD Number</label>
+    <input type="text" name="txnNo" required>
+
+    <label>Payment Date</label>
+    <input type="date" name="paymentDate" required>
+
+    <label>Bank Name (if DD)</label>
+    <input type="text" name="bankName">
+
+    <label>Branch (if DD)</label>
+    <input type="text" name="bankBranch">
+
+    <label><input type="checkbox" name="declaration" required> I declare the details are correct.</label>
+    <button type="submit" class="submit-btn">Submit Application</button>
+  </form>
 
   <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbzph_ysxYkgYxBttOUuAozg10y4RY5kCwkcyp5SV17bqBsVPOSecHPFIJ5EzULPKpWpvg/exec';
+    function submitForm(e) {
+      e.preventDefault();
+      const form = document.getElementById('licenseForm');
+      const formData = new FormData(form);
+      const activityDivs = document.querySelectorAll('.activity-group');
 
-    function login() {
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
+      const activities = [];
+      let totalUnits = 0;
 
-      fetch(`${API_URL}?action=login&username=${username}&password=${password}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            localStorage.setItem('username', username);
-            localStorage.setItem('loginTime', Date.now());
-            window.location.href = "dashboard.html";
-          } else {
-            document.getElementById('msg').innerText = "Invalid credentials.";
-          }
-        });
+      activityDivs.forEach(group => {
+        const activity = group.children[0].placeholder;
+        const qty = parseInt(group.children[1].value) || 0;
+        if (qty > 0) {
+          activities.push({ activity, units: qty });
+          totalUnits += qty;
+        }
+      });
+
+      const baseFee = totalUnits * 2000;
+      const gst = Math.round(baseFee * 0.28);
+      const totalFee = baseFee + gst;
+
+      const payload = {
+        applicantName: formData.get("applicantName"),
+        address: formData.get("address"),
+        contactNumber: formData.get("contactNumber"),
+        email: formData.get("email"),
+        occupation: formData.get("occupation"),
+        panNumber: formData.get("panNumber"),
+        aadhaarGST: formData.get("aadhaarGST"),
+        applicationDate: formData.get("applicationDate"),
+        waterBody: formData.get("waterBody"),
+        activities,
+        totalUnits,
+        baseFee,
+        gstAmount: gst,
+        totalFee,
+        paymentMode: formData.get("paymentMode"),
+        txnNo: formData.get("txnNo"),
+        paymentDate: formData.get("paymentDate"),
+        bankName: formData.get("bankName"),
+        bankBranch: formData.get("bankBranch"),
+        declaration: formData.get("declaration") === "on"
+      };
+
+      fetch("https://script.google.com/macros/s/AKfycby7nYeCRRn-CNmcUY2WPbJSRX8AJZzZl-aVOlf5vaqaK9YbOOxSkR3TYV0PLzjZVzGk/exec", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json())
+      .then(data => alert("Application submitted successfully!"))
+      .catch(err => alert("Submission failed. Please try again."));
     }
   </script>
+
 </body>
 </html>
